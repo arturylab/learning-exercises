@@ -1,3 +1,11 @@
+'''The Number Guessing Game works like this:
+- The computer picks a random number between 1 and 10.
+- The player keeps guessing until they get it right.
+- After each incorrect guess, the player gets a hint (higher or lower).
+- The program keeps track of the number of attempts.
+- The player’s best score (fewest attempts) is saved for future rounds.'''
+
+
 import random
 
 
