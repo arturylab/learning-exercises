@@ -64,6 +64,7 @@ class SpeedTestApp(QWidget):
         self.setStyleSheet("""
             QWidget {
                 background-color: #ffffff;
+                text-align: center;
             }
         """)
 
@@ -76,7 +77,9 @@ class SpeedTestApp(QWidget):
         try:
             # Initialize the Speedtest object and get the best server
             st = speedtest.Speedtest()
-            st.get_best_server()
+            best_server = st.get_best_server()
+            self.results_label.setText(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n")
+            QApplication.processEvents()
 
             # TEST DOWNLOAD SPEED
             self.label.setText("Testing download speed...")
