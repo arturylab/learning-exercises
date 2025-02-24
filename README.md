@@ -7,7 +7,7 @@ This repository contains exercises and practice projects based on my learning jo
 The repository is organized into folders corresponding to the courses I've taken:
 
 - **`python-fundamentals/`**: Exercises and concepts from the *Python Programming Fundamentals* course. 🐍
-- **`data-analysis/`**: Practical applications from the *Data Analysis and Visualization with Python* course. 📊
+- **`data-analysis-ml/`**: Practical applications from the *Data Analysis, Visualization and Machine Learning with Python* course. 📊
 - **`algorithms/`**: Practice and algorithms learned, including sorting, searching, and more. 🧠
 - **`app-gui`**: Small applications with graphical user interfaces (GUI). 🖥️
 
