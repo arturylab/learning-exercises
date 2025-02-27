@@ -1,9 +1,13 @@
-'''The Number Guessing Game works like this:
-- The computer picks a random number between 1 and 10.
-- The player keeps guessing until they get it right.
-- After each incorrect guess, the player gets a hint (higher or lower).
-- The program keeps track of the number of attempts.
-- The player’s best score (fewest attempts) is saved for future rounds.'''
+"""
+This script is a simple number guessing game where the player tries to guess a randomly generated number between 1 and 10. 
+The game tracks the number of attempts and maintains a list of past attempts to show the best score.
+Functions:
+    show_score(attempts_list):
+        Displays the best score from the list of attempts.
+    start_game():
+        Starts the number guessing game, handles user input, and provides feedback on guesses.
+        Tracks the number of attempts and allows the player to play multiple rounds.
+"""
 
 
 import random
@@ -68,6 +72,7 @@ def start_game():
         except ValueError as err:
             print("Oh no! That is not a valid numer. Try again...")
             print(err) # Show error message
+
 
 if __name__ == "__main__":
     start_game()

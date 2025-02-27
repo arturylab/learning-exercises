@@ -10,14 +10,55 @@ import sys
 import speedtest
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QThread, pyqtSignal
+
+
+class SpeedTestThread(QThread):
+    """Thread for running speed tests without blocking the UI"""
+    update_status = pyqtSignal(str)
+    update_result = pyqtSignal(str)
+    test_finished = pyqtSignal(bool, str)  # Success flag and error message if any
+
+    def run(self):
+        try:
+            # Initialize the Speedtest object and get the best server
+            self.update_status.emit("Finding best server...")
+            st = speedtest.Speedtest()
+            best_server = st.get_best_server()
+            self.update_result.emit(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n")
+
+            # TEST DOWNLOAD SPEED
+            self.update_status.emit("Testing download speed...")
+            download_speed = st.download() / 1_000_000  # Convert to Mbps
+            self.update_result.emit(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n"
+                                   f"Download speed: {download_speed:.2f} Mbps\n")
+
+            # TEST UPLOAD SPEED
+            self.update_status.emit("Testing upload speed...")
+            upload_speed = st.upload() / 1_000_000  # Convert to Mbps
+            self.update_result.emit(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n"
+                                   f"Download speed: {download_speed:.2f} Mbps\n"
+                                   f"Upload speed: {upload_speed:.2f} Mbps\n")
+
+            # TEST LATENCY (PING)
+            self.update_status.emit("Testing latency...")
+            ping = st.results.ping
+            self.update_result.emit(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n"
+                                   f"Download speed: {download_speed:.2f} Mbps\n"
+                                   f"Upload speed: {upload_speed:.2f} Mbps\n"
+                                   f"Latency: {ping:.2f} ms\n")
+
+            self.test_finished.emit(True, "")
+        except Exception as e:
+            self.test_finished.emit(False, str(e))
 
 
 class SpeedTestApp(QWidget):
     def __init__(self):
         super().__init__()
         self.init_ui()
+        self.test_thread = None
     
-
     def init_ui(self):
         """Initializes the UI layout and widgets."""
         self.setWindowTitle("Network Speed Test")
@@ -68,47 +109,38 @@ class SpeedTestApp(QWidget):
             }
         """)
 
-
     def run_speed_test(self):
-        """Runs the network speed test and displays results."""
-        self.label.setText("Testing... Please wait.")
-        QApplication.processEvents()
+        """Initiates the network speed test in a separate thread."""
+        # Disable the button during test
+        self.start_button.setEnabled(False)
+        self.start_button.setText("Testing...")
+        self.results_label.setText("")
+        
+        # Create and start the test thread
+        self.test_thread = SpeedTestThread()
+        self.test_thread.update_status.connect(self.update_status)
+        self.test_thread.update_result.connect(self.update_result)
+        self.test_thread.test_finished.connect(self.on_test_finished)
+        self.test_thread.start()
 
-        try:
-            # Initialize the Speedtest object and get the best server
-            st = speedtest.Speedtest()
-            best_server = st.get_best_server()
-            self.results_label.setText(f"Selected server: {best_server['host']} located in {best_server['name']}, {best_server['country']}.\n")
-            QApplication.processEvents()
+    def update_status(self, message):
+        """Updates the status label with the current operation."""
+        self.label.setText(message)
 
-            # TEST DOWNLOAD SPEED
-            self.label.setText("Testing download speed...")
-            QApplication.processEvents()
-            download_speed = st.download() / 1_000_000 # Convert to Mbps
-            self.results_label.setText(f"Download speed: {download_speed:.2f} Mbps\n")
-            QApplication.processEvents()
+    def update_result(self, result):
+        """Updates the results label with test results."""
+        self.results_label.setText(result)
 
-            # TEST UPLOAD SPEED
-            self.label.setText("Testing upload speed...")
-            QApplication.processEvents()
-            upload_speed = st.upload() / 1_000_000 # Convert to Mbps
-            self.results_label.setText(f"Download speed: {download_speed:.2f} Mbps\n"
-                                       f"Upload speed: {upload_speed:.2f} Mbps\n")
-            QApplication.processEvents()
-
-            # TEST LATENCY (PING)
-            self.label.setText("Testing latency...")
-            QApplication.processEvents()
-            ping = st.results.ping
-            self.results_label.setText(f"Download speed: {download_speed:.2f} Mbps\n"
-                                       f"Upload speed: {upload_speed:.2f} Mbps\n"
-                                       f"Latency: {ping:.2f} ms\n")
-            QApplication.processEvents()
-
+    def on_test_finished(self, success, error_message):
+        """Handles the completion of the speed test."""
+        self.start_button.setEnabled(True)
+        self.start_button.setText("Start Test")
+        
+        if success:
             self.label.setText("Test completed successfully.")
-
-        except Exception as e:
-            self.results_label.setText(f"An error occurred during the test. {e}")
+        else:
+            self.label.setText("Test failed.")
+            self.results_label.setText(f"An error occurred during the test: {error_message}")
 
 
 if __name__ == "__main__":
