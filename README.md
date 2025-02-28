@@ -10,6 +10,7 @@ The repository is organized into folders corresponding to the courses I've taken
 - **`data-analysis-ml/`**: Practical applications from the *Data Analysis, Visualization and Machine Learning with Python* course. 📊
 - **`algorithms/`**: Practice and algorithms learned, including sorting, searching, and more. 🧠
 - **`app-gui`**: Small applications with graphical user interfaces (GUI). 🖥️
+- **`scripting/`**: Scripts and automation tasks to streamline workflows and improve productivity. ⚙️
 
 More sections will be added as I progress through new topics. 🔜
 
