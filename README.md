@@ -11,6 +11,7 @@ The repository is organized into folders corresponding to the courses I've taken
 - **`algorithms/`**: Practice and algorithms learned, including sorting, searching, and more. 🧠
 - **`app-gui`**: Small applications with graphical user interfaces (GUI). 🖥️
 - **`scripting/`**: Scripts and automation tasks to streamline workflows and improve productivity. ⚙️
+- **`sql/`**: Exercises and projects related to SQL and database management. 🗄️
 
 More sections will be added as I progress through new topics. 🔜
 
