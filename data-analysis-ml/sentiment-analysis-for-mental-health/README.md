@@ -47,8 +47,9 @@ The goal is to train a Machine Learning model to predict the mental health statu
 
 ---
 
-## 📎 Related Links  
-🔗 [Kaggle Notebook & Dataset](https://www.kaggle.com/code/arturylab/sentiment-analysis-for-mh-scikit-learn)
+## 📎 Related Links
+Use this link to access to the notebook and dataset:  
+🔗 [Kaggle](https://www.kaggle.com/code/arturylab/sentiment-analysis-for-mh-scikit-learn)
 
 ---
 
@@ -58,10 +59,3 @@ The goal is to train a Machine Learning model to predict the mental health statu
 - Develop a **web app** for interactive predictions.  
 
 ---
-
-## 🛠 Installation & Usage  
-
-1️⃣ Clone the repository:  
-```bash
-git clone https://github.com/arturylab/learning-exercises/tree/4de5657e98b16c525a1a4797cd3083399b958267/data-analysis-ml/sentiment-analysis-for-mental-health
-cd sentiment-analysis-for-mental-health
