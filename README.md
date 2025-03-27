@@ -12,6 +12,7 @@ The repository is organized into folders corresponding to the courses I've taken
 - **`app-gui`**: Small applications with graphical user interfaces (GUI). 🖥️
 - **`scripting/`**: Scripts and automation tasks to streamline workflows and improve productivity. ⚙️
 - **`sql/`**: Exercises and projects related to SQL and database management. 🗄️
+- **`web-development/`**: Projects and exercises focused on web development with Python 🐍, including HTML, CSS, JavaScript, and frameworks. 🌐
 
 More sections will be added as I progress through new topics. 🔜
 

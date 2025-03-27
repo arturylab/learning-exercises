@@ -1,3 +1,5 @@
 venv/
 .vscode/
 sql/mysql/MiClaveAzureVM.pem
+# environment variables.
+.env
