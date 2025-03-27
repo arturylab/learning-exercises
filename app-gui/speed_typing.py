@@ -3,6 +3,7 @@ import time
 import random
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QTextEdit, QVBoxLayout
 from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt
 
 # Sample texts for the typing test
 TEXT_SAMPLES = [
@@ -29,16 +30,18 @@ class SpeedTypingApp(QWidget):
         self.setGeometry(100, 100, 500, 300)
 
         # Set font size for labels and text input
-        font = QFont()
-        font.setPointSize(24)
+        font = QFont("Monaco")
+        font.setPointSize(16)
 
         # Display a random text sample
         self.text_label = QLabel(random.choice(TEXT_SAMPLES), self)
         self.text_label.setFont(font)
+        self.text_label.setAlignment(Qt.AlignCenter)
 
         # Text input area for typing the displayed text
         self.text_input = QTextEdit(self)
         self.text_input.setFont(font)
+        self.text_input.setAlignment(Qt.AlignCenter)
         self.text_input.textChanged.connect(self.start_test)
 
         # Button to restart the test
@@ -78,7 +81,7 @@ class SpeedTypingApp(QWidget):
 
             # Calculate accuracy
             correct_chars = sum(1 for a, b in zip(typed_text, target_text) if a == b)
-            accuracy = (correct_chars / len(target_text)) * 100
+            accuracy = (correct_chars / len(target_text)) * 100 if len(typed_text) <= len(target_text) else 0
 
             # Display the result
             self.result_label.setText(f'WPM: {wpm:.2f}\nAccuracy: {accuracy:.2f}%')
@@ -88,6 +91,7 @@ class SpeedTypingApp(QWidget):
         # Restart the test with a new random text sample
         self.text_label.setText(random.choice(TEXT_SAMPLES))
         self.text_input.clear()
+        self.text_input.setAlignment(Qt.AlignCenter)
         self.text_input.setDisabled(False)
         self.text_input.setFocus()
         self.result_label.setText('')
