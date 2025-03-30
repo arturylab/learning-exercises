@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Word App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1 id="message">Hello, World!</h1>
+    <button class="click-me" onclick="changeMessage()">Click Me!</button>
+
+    <h2>Click Counter: <span id="counter">0</span></h2>
+
+    <div class="button-container">
+        <button class="increase" onclick="updateCounter('increase')">+</button>
+        <button class="decrease" onclick="updateCounter('decrease')">-</button>
+        <button class="reset" onclick="updateCounter('reset')">Reset</button>
+    </div>
+    
+    <br><br>
+    <a href="{{ url_for('about') }}">Go to About Page</a>
+    
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
