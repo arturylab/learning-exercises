@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web SSH Terminal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: monospace;
+            font-size: small;
+            background: black;
+            color: lime;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #terminal {
+            width: 80%;
+            max-width: 800px;
+            height: 400px;
+            overflow-y: auto;
+            border: 2px solid lime;
+            padding: 10px;
+            background: #000;
+            box-shadow: 0 0 10px lime;
+        }
+        #command {
+            width: 80%;
+            max-width: 800px;
+            border: 2px solid lime;
+            background: black;
+            color: lime;
+            padding: 10px;
+            font-size: 16px;
+            outline: none;
+            margin-top: 10px;
+            box-shadow: 0 0 5px lime;
+        }
+        .command {
+            color: cyan;
+        }
+        .response {
+            white-space: pre-wrap;
+            color: lime;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <input type="text" id="command" placeholder="Escribe un comando y presiona Enter">
+
+    <script>
+        const socket = io();
+        const terminal = document.getElementById("terminal");
+        const commandInput = document.getElementById("command");
+
+        // Conectar al servidor SSH
+        socket.emit("connect_ssh", {host: "host", user: "user", password: "password"});
+
+        socket.on("message", function (data) {
+            const responseElement = document.createElement("div");
+            responseElement.className = "response";
+            responseElement.textContent = data;
+            terminal.appendChild(responseElement);
+            terminal.scrollTop = terminal.scrollHeight;
+        });
+
+        commandInput.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        const command = commandInput.value.trim();
+        if (command === "") return;
+        commandInput.value = "";
+
+        // Mostrar el comando ingresado
+        const commandElement = document.createElement("div");
+        commandElement.className = "command";
+        commandElement.textContent = `$ ${command}`;
+        terminal.appendChild(commandElement);
+        terminal.scrollTop = terminal.scrollHeight;
+
+        // Si el comando es "exit", cerrar la conexión
+        if (command.toLowerCase() === "exit") {
+            socket.emit("disconnect_ssh");
+            const exitMessage = document.createElement("div");
+            exitMessage.className = "response";
+            exitMessage.textContent = "Desconectado del servidor SSH.";
+            terminal.appendChild(exitMessage);
+            terminal.scrollTop = terminal.scrollHeight;
+            return;
+        }
+
+        socket.emit("execute_command", { command: command });
+    }
+});
+
+    </script>
+</body>
+</html>
