@@ -1,5 +1,6 @@
 venv/
 .vscode/
+__pycache__/
 sql/mysql/MiClaveAzureVM.pem
 # environment variables.
 .env
